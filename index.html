@@ -24,6 +24,55 @@
       background: #000;
     }
 
+    /* ===== LOADING SCREEN ===== */
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
+    }
+
+    #loadingScreen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 182, 193, 0.15);
+      border-top: 3px solid #ffb6c1;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: #fce4ec;
+      font-size: 0.9rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      font-weight: 300;
+      opacity: 0.7;
+      animation: pulseText 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulseText {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
     /* ===== VIDEO BACKGROUND ===== */
     #video-bg {
       position: fixed;
@@ -38,31 +87,54 @@
       z-index: 0;
     }
 
-    /* ===== LYRIC / TEKS ANIMASI ===== */
-    #lyrics {
+    /* ===== KEJUTAN "MAAF 100x" (SHADOW RINGAN) ===== */
+    #surprise {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(0.5);
       text-align: center;
-      color: #fff;
-      z-index: 10;
+      color: #ff6b8a;
+      z-index: 20;
       pointer-events: none;
-      text-shadow: 0 0 30px rgba(255, 0, 224, 0.5);
+      font-size: 60px;
+      font-weight: 900;
+      letter-spacing: 8px;
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
     }
 
-    #lyrics span {
-      animation: glowText 2s ease-in-out;
-      font-size: 30px;
-      display: inline-block;
+    #surprise.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
     }
 
-    @keyframes glowText {
+    /* ===== EFEK DETAK JANTUNG (RINGAN, TANPA SHADOW BERAT) ===== */
+    #surprise.beating {
+      animation: heartbeat 0.9s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
       0%, 100% {
-        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00e0, 0 0 70px #ff00e0, 0 0 80px #ff00e0, 0 0 100px #ff00e0, 0 0 150px #ff00e0;
+        transform: translate(-50%, -50%) scale(1);
+        text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
       }
-      50% {
-        text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00e0, 0 0 70px #ff00e0, 0 0 80px #ff00e0, 0 0 100px #ff00e0, 0 0 150px #ff00e0, 0 0 180px #ff00e0;
+      14% {
+        transform: translate(-50%, -50%) scale(1.12);
+        text-shadow: 0 0 40px rgba(255, 107, 138, 0.6);
+      }
+      28% {
+        transform: translate(-50%, -50%) scale(1);
+        text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
+      }
+      42% {
+        transform: translate(-50%, -50%) scale(1.08);
+        text-shadow: 0 0 35px rgba(255, 107, 138, 0.5);
+      }
+      56% {
+        transform: translate(-50%, -50%) scale(1);
+        text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
       }
     }
 
@@ -92,7 +164,6 @@
       cursor: grabbing;
     }
 
-    /* ===== GAMBAR DI DALAM PAPER ===== */
     .paper.image {
       padding: 16px 18px 20px;
     }
@@ -109,7 +180,6 @@
       pointer-events: none;
     }
 
-    /* ===== TEKS DI PAPER ===== */
     .paper p {
       font-family: 'Poppins', sans-serif;
       font-size: 22px;
@@ -133,8 +203,17 @@
       .paper p {
         font-size: 18px;
       }
-      #lyrics span {
-        font-size: 22px;
+      #surprise {
+        font-size: 40px;
+        letter-spacing: 4px;
+      }
+      .loading-text {
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+      }
+      .loading-spinner {
+        width: 32px;
+        height: 32px;
       }
     }
 
@@ -153,13 +232,28 @@
         font-size: 14px;
         margin-bottom: 6px;
       }
-      #lyrics span {
-        font-size: 16px;
+      #surprise {
+        font-size: 28px;
+        letter-spacing: 2px;
+      }
+      .loading-text {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+      }
+      .loading-spinner {
+        width: 28px;
+        height: 28px;
       }
     }
   </style>
 </head>
 <body>
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">✦ For Najla ✦</div>
+  </div>
 
   <!-- ===== VIDEO BACKGROUND ===== -->
   <video autoplay loop muted playsinline id="video-bg">
@@ -167,26 +261,28 @@
     Browser tidak mendukung video.
   </video>
 
-  <!-- ===== LYRIC / TEKS ANIMASI ===== -->
-  <div id="lyrics"></div>
+  <!-- ===== KEJUTAN "MAAF 100x" (RINGAN) ===== -->
+  <div id="surprise">
+    MAAF 100x
+  </div>
 
   <!-- ===== KERTAS / PAPER ===== -->
-  <div class="paper image" style="top: 10%; left: 5%; transform: rotate(-8deg);">
+  <div class="paper image" style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-6deg); z-index: 1;">
     <p>lopyuuu ❤️</p>
     <img src="./gambar4.jpg" alt="gambar4" />
   </div>
 
-  <div class="paper image" style="top: 55%; left: 65%; transform: rotate(12deg);">
+  <div class="paper image" style="top: 50%; left: 50%; transform: translate(-45%, -55%) rotate(4deg); z-index: 2;">
     <p>aku niatnya bercanda</p>
     <img src="./gambar3.jpg" alt="gambar3" />
   </div>
 
-  <div class="paper image" style="top: 20%; left: 70%; transform: rotate(5deg);">
+  <div class="paper image" style="top: 50%; left: 50%; transform: translate(-55%, -50%) rotate(-3deg); z-index: 3;">
     <p>maafin dong</p>
     <img src="./gambar2.jpg" alt="gambar2" />
   </div>
 
-  <div class="paper image" style="top: 60%; left: 8%; transform: rotate(-10deg);">
+  <div class="paper image" style="top: 50%; left: 50%; transform: translate(-50%, -60%) rotate(8deg); z-index: 4;">
     <p>hai cantik</p>
     <img src="./gambar1.jpg" alt="gambar1" />
   </div>
@@ -194,10 +290,21 @@
   <!-- ===== JAVASCRIPT ===== -->
   <script>
     // ============================================================
-    // 1. DRAG & ROTATE PAPER
+    // 1. LOADING SCREEN
+    // ============================================================
+    document.addEventListener("DOMContentLoaded", function() {
+      const loadingScreen = document.getElementById('loadingScreen');
+      
+      setTimeout(function() {
+        loadingScreen.classList.add('hidden');
+      }, 3000);
+    });
+
+    // ============================================================
+    // 2. DRAG & ROTATE PAPER
     // ============================================================
     (function() {
-        let highestZ = 1;
+        let highestZ = 4;
 
         class Paper {
             holdingPaper = false;
@@ -215,7 +322,6 @@
             rotating = false;
 
             init(paper) {
-                // Ambil rotasi awal dari style inline
                 const style = window.getComputedStyle(paper);
                 const transform = style.transform;
                 if (transform && transform !== 'none') {
@@ -227,7 +333,6 @@
                     }
                 }
 
-                // Mouse move
                 document.addEventListener('mousemove', (e) => {
                     if (!this.rotating) {
                         this.mouseX = e.clientX;
@@ -255,11 +360,10 @@
                         }
                         this.prevMouseX = this.mouseX;
                         this.prevMouseY = this.mouseY;
-                        paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+                        paper.style.transform = `translate(${this.currentPaperX}px, ${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
                     }
                 });
 
-                // Mouse down
                 paper.addEventListener('mousedown', (e) => {
                     if (this.holdingPaper) return;
                     this.holdingPaper = true;
@@ -277,13 +381,11 @@
                     }
                 });
 
-                // Mouse up
                 window.addEventListener('mouseup', () => {
                     this.holdingPaper = false;
                     this.rotating = false;
                 });
 
-                // Touch events for mobile
                 paper.addEventListener('touchstart', (e) => {
                     if (this.holdingPaper) return;
                     this.holdingPaper = true;
@@ -312,7 +414,7 @@
                     this.prevMouseX = this.mouseX;
                     this.prevMouseY = this.mouseY;
 
-                    paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+                    paper.style.transform = `translate(${this.currentPaperX}px, ${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
                 }, { passive: true });
 
                 document.addEventListener('touchend', () => {
@@ -330,62 +432,20 @@
     })();
 
     // ============================================================
-    // 2. LYRIC ANIMATION
+    // 3. SURPRISE "MAAF 100x" DENGAN EFEK DETAK JANTUNG (RINGAN)
     // ============================================================
     document.addEventListener("DOMContentLoaded", function () {
-        const lyrics = [
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            "KARENA AKU ",
-            "MENCINTAIMU ",
-            "DAN HATIKU",
-            "HANYA UNTUKMU",
-            "TAK AKAN MENYERAH",
-            "DAN TAKAN BERHENTI",
-            "MENCINTAIMU",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " "
-        ];
+        const surprise = document.getElementById('surprise');
 
-        const delay = 41;
-        const lyricsElement = document.getElementById("lyrics");
-
-        async function displayLyrics() {
-            for (const line of lyrics) {
-                for (const char of line) {
-                    const charElement = document.createElement("span");
-                    charElement.textContent = char;
-                    charElement.style.animation = "glowText 2s ease-in-out";
-                    lyricsElement.appendChild(charElement);
-
-                    await new Promise((resolve) => setTimeout(resolve, delay));
-                    charElement.style.animation = "";
-                }
-
-                lyricsElement.appendChild(document.createElement("br"));
-                await new Promise((resolve) => setTimeout(resolve, delay * 25));
-                lyricsElement.textContent = "";
-                await new Promise((resolve) => setTimeout(resolve, delay * 35));
-            }
-        }
-
-        displayLyrics();
+        // Munculkan kejutan setelah 10 detik
+        setTimeout(function() {
+            surprise.classList.add('show');
+            
+            // Setelah muncul, tambahkan efek detak jantung (loop)
+            setTimeout(function() {
+                surprise.classList.add('beating');
+            }, 500);
+        }, 10000);
     });
   </script>
 </body>
