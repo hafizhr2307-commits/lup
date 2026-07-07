@@ -5,193 +5,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>I LOVE YOU</title>
 
-  <!-- ===== GABUNGAN CSS ===== -->
   <style>
-    /* === dari style.css === */
+    /* ===== IMPORT FONT ===== */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&family=Rubik:wght@300;400;500;600;700;800&display=swap');
+
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body, html {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: clamp(1.5rem, 2rem, 3rem);
-        font-weight: 700;
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        color: rgb(255, 255, 255);
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
     }
 
-    .container {
-        text-align: center; 
-    }
-
-    .container > span{
-        animation: glow 0s ease-in-out infinite;
-    }
-
-    @keyframes glow {
-        0%, 100%{
-            color: rgb(255, 255, 255);
-            text-shadow: 0 0 22px rgb(43, 248, 255), 0 0 70px rgb(0, 255, 255);
-        }
-        10%, 90%{
-            color: rgb(27, 27, 27);
-            text-shadow: none;
-        }
-    }
-
-    .video-background {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
+    /* ===== VIDEO BACKGROUND ===== */
     #video-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        min-width: 100%;
-        min-height: 100%;
-        z-index: -1;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: cover;
+      z-index: 0;
     }
 
-    /* === dari card.css === */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&family=Rubik:wght@300;400;500;600;700;800&display=swap');
-
-    body {
-        margin: 0;
-        overflow: hidden;
-    }
-
-    video {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
-        z-index: -1;
-    }
-
-    content {
-        z-index: 1;
-    }
-
-    .paper {
-        background-color: rgb(234, 229, 229);
-        top: 30%;
-        left: 40%;
-        padding: 20px 80px;
-        transform: rotateZ(-5deg);
-        box-shadow: 1px 15px 20px 0px rgba(0,0,0,0.5);
-        position: absolute;
-        border-radius: 20px;
-        text-align: center;
-        cursor: grab;
-        touch-action: none;
-    }
-
-    .paper:active {
-        cursor: grabbing;
-    }
-
-    .content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1;
-        text-align: center;
-        color: #fff;
-    }
-
-    .paper.image {
-        padding: 10px;
-    }
-
-    .paper.image p {
-        font-size: 20px;
-    }
-
-    img {
-        max-height: 200px;
-        width: 100%;
-        user-select: none;
-        pointer-events: none;
-    }
-
-    @keyframes glowText {
-        0%, 100% {
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00e0, 0 0 70px #ff00e0, 0 0 80px #ff00e0, 0 0 100px #ff00e0, 0 0 150px #ff00e0;
-        }
-        50% {
-            text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00e0, 0 0 70px #ff00e0, 0 0 80px #ff00e0, 0 0 100px #ff00e0, 0 0 150px #ff00e0, 0 0 180px #ff00e0;
-        }
-    }
-
+    /* ===== LYRIC / TEKS ANIMASI ===== */
     #lyrics {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        color: #fff;
-        z-index: 10;
-        pointer-events: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      z-index: 10;
+      pointer-events: none;
+      text-shadow: 0 0 30px rgba(255, 0, 224, 0.5);
     }
 
     #lyrics span {
-        animation: glowText 2s ease-in-out;
-        font-size: 30px;
+      animation: glowText 2s ease-in-out;
+      font-size: 30px;
+      display: inline-block;
     }
 
-    p {
-        font-family: 'Poppins', sans-serif;
-        font-size: 40px;
-        color: rgb(0, 0, 0);
-        user-select: none;
-        margin: 5px 0;
+    @keyframes glowText {
+      0%, 100% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00e0, 0 0 70px #ff00e0, 0 0 80px #ff00e0, 0 0 100px #ff00e0, 0 0 150px #ff00e0;
+      }
+      50% {
+        text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00e0, 0 0 70px #ff00e0, 0 0 80px #ff00e0, 0 0 100px #ff00e0, 0 0 150px #ff00e0, 0 0 180px #ff00e0;
+      }
     }
 
-    /* Responsive */
+    /* ===== PAPER / KERTAS ===== */
+    .paper {
+      background-color: rgba(234, 229, 229, 0.92);
+      backdrop-filter: blur(4px);
+      padding: 18px 30px 22px;
+      border-radius: 24px;
+      box-shadow: 1px 15px 25px 0px rgba(0,0,0,0.6);
+      position: absolute;
+      text-align: center;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      min-width: 120px;
+      max-width: 260px;
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .paper:hover {
+      box-shadow: 1px 20px 35px 0px rgba(0,0,0,0.7);
+    }
+
+    .paper:active {
+      cursor: grabbing;
+    }
+
+    /* ===== GAMBAR DI DALAM PAPER ===== */
+    .paper.image {
+      padding: 16px 18px 20px;
+    }
+
+    .paper.image img {
+      max-height: 160px;
+      width: auto;
+      max-width: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      pointer-events: none;
+    }
+
+    /* ===== TEKS DI PAPER ===== */
+    .paper p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 10px 0;
+      user-select: none;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-        .paper {
-            padding: 15px 40px;
-            top: 25%;
-            left: 20%;
-        }
-        img {
-            max-height: 130px;
-        }
-        p {
-            font-size: 24px;
-        }
-        #lyrics span {
-            font-size: 20px;
-        }
+      .paper {
+        padding: 14px 20px 16px;
+        max-width: 200px;
+        min-width: 100px;
+      }
+      .paper.image img {
+        max-height: 120px;
+      }
+      .paper p {
+        font-size: 18px;
+      }
+      #lyrics span {
+        font-size: 22px;
+      }
     }
 
     @media (max-width: 480px) {
-        .paper {
-            padding: 10px 20px;
-            top: 20%;
-            left: 10%;
-        }
-        img {
-            max-height: 100px;
-        }
-        p {
-            font-size: 18px;
-        }
-        #lyrics span {
-            font-size: 16px;
-        }
+      .paper {
+        padding: 10px 14px 14px;
+        max-width: 150px;
+        min-width: 80px;
+        border-radius: 16px;
+      }
+      .paper.image img {
+        max-height: 90px;
+        border-radius: 10px;
+      }
+      .paper p {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      #lyrics span {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -200,37 +164,37 @@
   <!-- ===== VIDEO BACKGROUND ===== -->
   <video autoplay loop muted playsinline id="video-bg">
     <source src="./love.mp4" type="video/mp4">
-    
+    Browser tidak mendukung video.
   </video>
 
   <!-- ===== LYRIC / TEKS ANIMASI ===== -->
   <div id="lyrics"></div>
 
   <!-- ===== KERTAS / PAPER ===== -->
-  <div class="paper image">
+  <div class="paper image" style="top: 10%; left: 5%; transform: rotate(-8deg);">
     <p>lopyuuu ❤️</p>
     <img src="./gambar4.jpg" alt="gambar4" />
   </div>
 
-  <div class="paper image">
+  <div class="paper image" style="top: 55%; left: 65%; transform: rotate(12deg);">
     <p>aku niatnya bercanda</p>
     <img src="./gambar3.jpg" alt="gambar3" />
   </div>
 
-  <div class="paper image">
+  <div class="paper image" style="top: 20%; left: 70%; transform: rotate(5deg);">
     <p>maafin dong</p>
     <img src="./gambar2.jpg" alt="gambar2" />
   </div>
 
-  <div class="paper image">
+  <div class="paper image" style="top: 60%; left: 8%; transform: rotate(-10deg);">
     <p>hai cantik</p>
     <img src="./gambar1.jpg" alt="gambar1" />
   </div>
 
-  <!-- ===== GABUNGAN JAVASCRIPT ===== -->
+  <!-- ===== JAVASCRIPT ===== -->
   <script>
     // ============================================================
-    // 1. CARD.JS - Drag & Rotate Paper
+    // 1. DRAG & ROTATE PAPER
     // ============================================================
     (function() {
         let highestZ = 1;
@@ -245,12 +209,24 @@
             prevMouseY = 0;
             velX = 0;
             velY = 0;
-            rotation = Math.random() * 30 - 15;
+            rotation = 0;
             currentPaperX = 0;
             currentPaperY = 0;
             rotating = false;
 
             init(paper) {
+                // Ambil rotasi awal dari style inline
+                const style = window.getComputedStyle(paper);
+                const transform = style.transform;
+                if (transform && transform !== 'none') {
+                    const matrix = transform.match(/matrix.*\((.+)\)/);
+                    if (matrix) {
+                        const values = matrix[1].split(', ');
+                        const angle = Math.atan2(parseFloat(values[1]), parseFloat(values[0])) * (180 / Math.PI);
+                        this.rotation = angle || 0;
+                    }
+                }
+
                 // Mouse move
                 document.addEventListener('mousemove', (e) => {
                     if (!this.rotating) {
@@ -263,15 +239,13 @@
                     const dirX = e.clientX - this.mouseTouchX;
                     const dirY = e.clientY - this.mouseTouchY;
                     const dirLength = Math.sqrt(dirX * dirX + dirY * dirY);
-                    if (dirLength > 0) {
+                    if (dirLength > 0 && this.rotating) {
                         const dirNormalizedX = dirX / dirLength;
                         const dirNormalizedY = dirY / dirLength;
                         const angle = Math.atan2(dirNormalizedY, dirNormalizedX);
                         let degrees = 180 * angle / Math.PI;
                         degrees = (360 + Math.round(degrees)) % 360;
-                        if (this.rotating) {
-                            this.rotation = degrees;
-                        }
+                        this.rotation = degrees;
                     }
 
                     if (this.holdingPaper) {
@@ -356,7 +330,7 @@
     })();
 
     // ============================================================
-    // 2. SCRIPT.JS + CARD.JS - Lyrics Animation
+    // 2. LYRIC ANIMATION
     // ============================================================
     document.addEventListener("DOMContentLoaded", function () {
         const lyrics = [
@@ -398,27 +372,17 @@
                     const charElement = document.createElement("span");
                     charElement.textContent = char;
                     charElement.style.animation = "glowText 2s ease-in-out";
-                    charElement.style.fontSize = "30px";
                     lyricsElement.appendChild(charElement);
 
                     await new Promise((resolve) => setTimeout(resolve, delay));
-
                     charElement.style.animation = "";
                 }
 
                 lyricsElement.appendChild(document.createElement("br"));
-
                 await new Promise((resolve) => setTimeout(resolve, delay * 25));
-
                 lyricsElement.textContent = "";
-
                 await new Promise((resolve) => setTimeout(resolve, delay * 35));
             }
-
-            // Optional: redirect after finish
-            // setTimeout(function () {
-            //     window.location.href = "yournexthtmlfile.html";
-            // }, 700);
         }
 
         displayLyrics();
