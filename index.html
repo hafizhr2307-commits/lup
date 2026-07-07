@@ -87,54 +87,58 @@
       z-index: 0;
     }
 
-    /* ===== KEJUTAN "MAAF 100x" (SHADOW RINGAN) ===== */
+    /* ===== KEJUTAN "MAAF 100x" MUNCUL 1 PER 1 ===== */
     #surprise {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.5);
+      transform: translate(-50%, -50%);
       text-align: center;
-      color: #ff6b8a;
       z-index: 20;
       pointer-events: none;
       font-size: 60px;
       font-weight: 900;
       letter-spacing: 8px;
-      opacity: 0;
-      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      color: #ff6b8a;
       text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
 
     #surprise.show {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
     }
 
-    /* ===== EFEK DETAK JANTUNG (RINGAN, TANPA SHADOW BERAT) ===== */
-    #surprise.beating {
-      animation: heartbeat 0.9s ease-in-out infinite;
+    #surprise .char {
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0.5) rotateY(90deg);
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
-    @keyframes heartbeat {
-      0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotateY(90deg);
       }
-      14% {
-        transform: translate(-50%, -50%) scale(1.12);
-        text-shadow: 0 0 40px rgba(255, 107, 138, 0.6);
+      100% {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
       }
-      28% {
-        transform: translate(-50%, -50%) scale(1);
-        text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
+    }
+
+    #surprise .char.fade-out {
+      animation: popOut 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes popOut {
+      0% {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
       }
-      42% {
-        transform: translate(-50%, -50%) scale(1.08);
-        text-shadow: 0 0 35px rgba(255, 107, 138, 0.5);
-      }
-      56% {
-        transform: translate(-50%, -50%) scale(1);
-        text-shadow: 0 0 30px rgba(255, 107, 138, 0.4);
+      100% {
+        opacity: 0;
+        transform: scale(0.5) rotateY(-90deg);
       }
     }
 
@@ -190,6 +194,15 @@
       letter-spacing: 0.5px;
     }
 
+    /* ===== SPASI KHUSUS UNTUK "MAAF 100x" ===== */
+    #surprise .char.space {
+      width: 20px;
+      display: inline-block;
+      animation: none !important;
+      opacity: 0 !important;
+      transform: none !important;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .paper {
@@ -206,6 +219,9 @@
       #surprise {
         font-size: 40px;
         letter-spacing: 4px;
+      }
+      #surprise .char.space {
+        width: 12px;
       }
       .loading-text {
         font-size: 0.75rem;
@@ -236,6 +252,9 @@
         font-size: 28px;
         letter-spacing: 2px;
       }
+      #surprise .char.space {
+        width: 8px;
+      }
       .loading-text {
         font-size: 0.65rem;
         letter-spacing: 2px;
@@ -261,10 +280,8 @@
     Browser tidak mendukung video.
   </video>
 
-  <!-- ===== KEJUTAN "MAAF 100x" (RINGAN) ===== -->
-  <div id="surprise">
-    MAAF 100x
-  </div>
+  <!-- ===== KEJUTAN "MAAF 100x" MUNCUL 1 PER 1 ===== -->
+  <div id="surprise"></div>
 
   <!-- ===== KERTAS / PAPER ===== -->
   <div class="paper image" style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-6deg); z-index: 1;">
@@ -432,19 +449,74 @@
     })();
 
     // ============================================================
-    // 3. SURPRISE "MAAF 100x" DENGAN EFEK DETAK JANTUNG (RINGAN)
+    // 3. ANIMASI "MAAF 100x" MUNCUL 1 PER 1 + LOOP (DENGAN SPASI)
     // ============================================================
     document.addEventListener("DOMContentLoaded", function () {
         const surprise = document.getElementById('surprise');
+        // Teks dengan spasi: "MAAF 100x" (spasi di antara MAAF dan 100x)
+        const text = "MAAF 100x";
+        let isRunning = false;
 
-        // Munculkan kejutan setelah 10 detik
-        setTimeout(function() {
+        function animateText() {
+            if (isRunning) return;
+            isRunning = true;
+
+            // Kosongkan dulu
+            surprise.innerHTML = '';
+            surprise.classList.remove('show');
+
+            // Buat span per huruf (termasuk spasi)
+            const chars = text.split('');
+            const spans = [];
+
+            chars.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char;
+                
+                // Jika karakter adalah spasi, beri class khusus agar tidak kena animasi
+                if (char === ' ') {
+                    span.className = 'char space';
+                    span.style.opacity = '0';
+                    span.style.transform = 'none';
+                } else {
+                    span.style.animationDelay = (index * 80) + 'ms';
+                }
+                
+                surprise.appendChild(span);
+                spans.push(span);
+            });
+
+            // Tampilkan
             surprise.classList.add('show');
-            
-            // Setelah muncul, tambahkan efek detak jantung (loop)
-            setTimeout(function() {
-                surprise.classList.add('beating');
-            }, 500);
+
+            // Hitung total durasi muncul (semua huruf selesai)
+            const totalAppear = chars.length * 80 + 400;
+
+            // Tunggu sampai semua huruf muncul, lalu fade out
+            setTimeout(() => {
+                // Tambah class fade-out ke setiap span (kecuali spasi)
+                spans.forEach((span, index) => {
+                    if (span.classList.contains('space')) return; // skip spasi
+                    span.classList.add('fade-out');
+                    span.style.animationDelay = (index * 40) + 'ms';
+                });
+
+                // Tunggu sampai semua hilang, lalu reset dan loop
+                setTimeout(() => {
+                    surprise.classList.remove('show');
+                    isRunning = false;
+                    // Mulai lagi setelah jeda 0.5 detik
+                    setTimeout(() => {
+                        animateText();
+                    }, 500);
+                }, chars.length * 40 + 500);
+            }, totalAppear + 600);
+        }
+
+        // Mulai animasi setelah 10 detik (kejutan)
+        setTimeout(function() {
+            animateText();
         }, 10000);
     });
   </script>
